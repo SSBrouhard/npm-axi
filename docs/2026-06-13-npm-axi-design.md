@@ -22,6 +22,8 @@ src/commands/        Pure transforms returning plain JS objects (TOON-encoded by
   downloads.ts
 src/home.ts          No-args home view (reads ./package.json if present)
 src/help.ts          Top-level + per-command help text
+src/args.ts          Flag parser (parseFlags, parseLimit)
+src/format.ts        Output helpers (collapseWhitespace, truncateLine, isoDate, licenseString, normalizeRepo)
 test/                vitest, global fetch mocked against captured registry fixtures
 .agents/skills/npm-axi/SKILL.md   Installable skill (npx skills add)
 ```
@@ -53,15 +55,17 @@ run shows live content (P8).
 - **Empty (P5):** `packages: 0 packages found for "<q>"`, exit 0.
 - **Errors (P6):** missing arg → `AxiError(..., "VALIDATION_ERROR")` → exit 2. Unknown package
   (404) → `AxiError('package "<name>" not found in the npm registry', "NOT_FOUND", [search suggestion])`
-  → exit 1. Raw HTTP/fetch text never reaches stdout.
+  → exit 1. Malformed JSON from the registry → `AxiError(..., "REGISTRY")`. Raw HTTP/fetch text
+  never reaches stdout.
 - **Truncation (P3):** README preview ~800 chars, whitespace-collapsed, with `readmeChars`
   total and a `--full` help hint when truncated.
 
 ## Testing
 
 TDD with vitest. Mock global `fetch` against fixtures captured from real registry responses.
-Cover: search transform + total + empty state, view aggregates + truncation + `--full`,
-versions ordering + total, downloads aggregates, error mapping (missing arg, 404).
+Cover: search transform + total + empty state + MAX_LIMIT hint suppression, view aggregates +
+truncation + `--full` order-independence + scoped package URL encoding, versions ordering +
+total, downloads aggregates, error mapping (missing arg, 404, malformed JSON → REGISTRY).
 
 ## Submission
 

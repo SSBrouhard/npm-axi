@@ -64,6 +64,27 @@ describe("view", () => {
     expect(out.help).toBeUndefined();
   });
 
+  it("handles --full placed before the package name", async () => {
+    mockFetch({
+      "registry.npmjs.org/react": { json: packument("some readme") },
+      "/downloads/point/last-week/react": { json: { downloads: 1 } },
+    });
+    const out = await viewCommand(["--full", "react"]);
+    const pkg = out.package as Record<string, unknown>;
+    expect(pkg.readme).toBe("some readme");
+    expect(pkg.readmeChars).toBeUndefined();
+    expect(out.help).toBeUndefined();
+  });
+
+  it("correctly encodes scoped package names in URLs", async () => {
+    mockFetch({
+      "/@babel%2Fcore": { json: packument("short readme") },
+      "/last-week/@babel%2Fcore": { json: { downloads: 500 } },
+    });
+    const out = await viewCommand(["@babel/core"]);
+    expect((out.package as Record<string, unknown>).version).toBe("18.3.1");
+  });
+
   it("translates a 404 into a NOT_FOUND error", async () => {
     mockFetch({ "registry.npmjs.org/nope": { status: 404 } });
     await expect(viewCommand(["nope"])).rejects.toMatchObject({ code: "NOT_FOUND" });

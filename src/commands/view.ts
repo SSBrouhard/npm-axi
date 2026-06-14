@@ -12,7 +12,7 @@ const README_PREVIEW = 800;
 const NO_README = "ERROR: No README data found!";
 
 export async function viewCommand(args: string[]): Promise<Record<string, unknown>> {
-  const { positionals, flags } = parseFlags(args);
+  const { positionals, flags } = parseFlags(args, ["full"]);
   const pkg = positionals[0];
   if (!pkg) {
     throw new AxiError("a package name is required", "VALIDATION_ERROR", [

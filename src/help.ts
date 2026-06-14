@@ -28,8 +28,8 @@ Examples:
 `,
   view: `npm-axi view <pkg> [--full]
 
-Show package details: latest version, license, dependency count, weekly downloads,
-repository, publish date, and a truncated README.
+Show package details: latest version, license, description, dependency count, weekly
+downloads, homepage, repository, publish date, and a truncated README.
 
 Flags:
   --full   Print the complete README instead of a preview

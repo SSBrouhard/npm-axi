@@ -49,8 +49,10 @@ package:
   name: zod
   version: 3.24.1
   license: MIT
+  description: TypeScript-first schema declaration and validation library
   dependencies: 0
   weeklyDownloads: 24500000
+  homepage: https://zod.dev
   repository: https://github.com/colinhacks/zod
   published: 2024-12-30
   readme: First 800 chars...

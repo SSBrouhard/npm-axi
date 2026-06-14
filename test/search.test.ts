@@ -40,6 +40,18 @@ describe("search", () => {
     await expect(searchCommand([])).rejects.toMatchObject({ code: "VALIDATION_ERROR" });
   });
 
+  it("suppresses the more-results hint when already at MAX_LIMIT", async () => {
+    mockFetch({ "/-/v1/search": { json: twoResults } });
+    const out = await searchCommand(["react", "--limit", "250"]);
+    const help = out.help as string[];
+    expect(help.some((h) => h.includes("--limit"))).toBe(false);
+  });
+
+  it("wraps malformed JSON from the registry as a REGISTRY AxiError", async () => {
+    mockFetch({ "/-/v1/search": { badJson: true } });
+    await expect(searchCommand(["react"])).rejects.toMatchObject({ code: "REGISTRY" });
+  });
+
   it("truncates long descriptions", async () => {
     const long = "x".repeat(200);
     mockFetch({ "/-/v1/search": { json: { total: 1, objects: [{ package: { name: "p", version: "1.0.0", description: long } }] } } });

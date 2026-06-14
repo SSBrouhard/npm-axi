@@ -4,6 +4,7 @@ interface Route {
   status?: number;
   json?: unknown;
   reject?: boolean;
+  badJson?: boolean;
 }
 
 /**
@@ -24,7 +25,7 @@ export function mockFetch(routes: Record<string, Route>): void {
       return {
         ok: status >= 200 && status < 300,
         status,
-        json: async () => route.json ?? {},
+        json: async () => { if (route.badJson) throw new SyntaxError("Unexpected token"); return route.json ?? {}; },
       } as Response;
     }),
   );

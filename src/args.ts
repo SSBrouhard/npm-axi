@@ -6,9 +6,10 @@ export interface ParsedArgs {
 /**
  * Minimal flag parser for AXI commands.
  * Supports `--key value`, `--key=value`, and boolean `--flag`.
+ * Names in `booleans` are always treated as boolean even when followed by a non-flag token.
  * Everything else is a positional.
  */
-export function parseFlags(args: string[]): ParsedArgs {
+export function parseFlags(args: string[], booleans: string[] = []): ParsedArgs {
   const positionals: string[] = [];
   const flags: Record<string, string | boolean> = {};
 
@@ -27,7 +28,7 @@ export function parseFlags(args: string[]): ParsedArgs {
     }
 
     const next = args[i + 1];
-    if (next !== undefined && !next.startsWith("--")) {
+    if (next !== undefined && !next.startsWith("--") && !booleans.includes(body)) {
       flags[body] = next;
       i++;
     } else {
