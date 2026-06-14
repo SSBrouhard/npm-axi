@@ -8,7 +8,7 @@ export interface ParsedArgs {
  * Supports `--key value`, `--key=value`, and boolean `--flag`.
  * Everything else is a positional.
  */
-export function parseFlags(args: string[]): ParsedArgs {
+export function parseFlags(args: string[], booleans: string[] = []): ParsedArgs {
   const positionals: string[] = [];
   const flags: Record<string, string | boolean> = {};
 
@@ -27,7 +27,7 @@ export function parseFlags(args: string[]): ParsedArgs {
     }
 
     const next = args[i + 1];
-    if (next !== undefined && !next.startsWith("--")) {
+    if (next !== undefined && !next.startsWith("--") && !booleans.includes(body)) {
       flags[body] = next;
       i++;
     } else {

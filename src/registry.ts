@@ -42,6 +42,10 @@ function notFound(pkg: string, what: string): AxiError {
   ]);
 }
 
+function encodePkg(pkg: string): string {
+  return pkg.startsWith("@") ? `@${encodeURIComponent(pkg.slice(1))}` : encodeURIComponent(pkg);
+}
+
 async function getJson(url: string): Promise<unknown> {
   let response: Response;
   try {
@@ -57,7 +61,13 @@ async function getJson(url: string): Promise<unknown> {
     error.status = response.status;
     throw error;
   }
-  return response.json();
+  try {
+    return await response.json();
+  } catch {
+    throw new AxiError("the npm registry returned an unexpected response", "REGISTRY", [
+      "Try again in a moment",
+    ]);
+  }
 }
 
 /** Search the registry. Returns total match count plus this page of results. */
@@ -70,7 +80,7 @@ export async function searchPackages(query: string, limit: number): Promise<Sear
 /** Fetch the full packument for a package, translating 404 into a NOT_FOUND AxiError. */
 export async function fetchPackument(pkg: string): Promise<Packument> {
   try {
-    return (await getJson(`${REGISTRY}/${encodeURIComponent(pkg)}`)) as Packument;
+    return (await getJson(`${REGISTRY}/${encodePkg(pkg)}`)) as Packument;
   } catch (error) {
     if (error instanceof AxiError) throw error;
     if ((error as { status?: number }).status === 404) throw notFound(pkg, "package");
@@ -89,7 +99,7 @@ export async function fetchDownloadsPoint(
   period: "last-week" | "last-month",
 ): Promise<number | null> {
   try {
-    const data = (await getJson(`${DOWNLOADS}/point/${period}/${encodeURIComponent(pkg)}`)) as {
+    const data = (await getJson(`${DOWNLOADS}/point/${period}/${encodePkg(pkg)}`)) as {
       downloads?: number;
     };
     return typeof data.downloads === "number" ? data.downloads : null;

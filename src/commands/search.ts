@@ -29,7 +29,7 @@ export async function searchCommand(args: string[]): Promise<Record<string, unkn
   }));
 
   const help = ["Run `npm-axi view <name>` for details"];
-  if (total > packages.length) {
+  if (total > packages.length && limit < MAX_LIMIT) {
     const more = Math.min(limit + 30, MAX_LIMIT);
     help.push(`Run \`npm-axi search "${query}" --limit ${more}\` for more results`);
   }
