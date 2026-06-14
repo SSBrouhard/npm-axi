@@ -7,8 +7,8 @@
 `npm-axi` wraps the public npm registry in an agent-ergonomic CLI. It returns
 [TOON](https://toonformat.dev/) output (~40% fewer tokens than JSON), minimal default
 schemas, pre-computed aggregates, and structured errors — so an agent can answer "what's the
-latest version of X", "is this package maintained", or "what are its dependencies" in a single
-call. Read-only, no authentication required.
+latest version of X", "is this package maintained", or "how many dependencies does it have" in
+a single call. Read-only, no authentication required.
 
 ## Install
 
@@ -24,14 +24,18 @@ npx -y npm-axi <command>
 
 ## Usage
 
+The examples below are snapshots of live npm registry output; versions, dates, counts, and
+download totals will drift as packages change.
+
 ### search
 
 ```sh
 $ npm-axi search "react state management" --limit 5
-count: 5 of 585410 total
+count: 5 of 585437 total
 packages[5]{name,version,description}:
   unstated-next,1.1.0,200 bytes to never think about React state management libraries ever again
-  constate,4.0.0,Yet another React state management library that lets you work with local state …
+  @risingstack/react-easy-state,6.3.0,React state management with a minimal API. Made with ES6 Proxies.
+  constate,4.0.0,Yet another React state management library that lets you work with local state and scale up to globa …
   ...
 help[2]:
   Run `npm-axi view <name>` for details
@@ -41,33 +45,33 @@ help[2]:
 ### view
 
 ```sh
-$ npm-axi view zod
+$ npm-axi view axios
 package:
-  name: zod
-  version: 3.24.1
+  name: axios
+  version: 1.17.0
   license: MIT
-  description: TypeScript-first schema declaration and validation library
-  dependencies: 0
-  weeklyDownloads: 24500000
-  homepage: https://zod.dev
-  repository: https://github.com/colinhacks/zod
-  published: 2024-12-30
+  description: Promise based HTTP client for the browser and node.js
+  dependencies: 4
+  weeklyDownloads: 118010181
+  homepage: "https://axios-http.com"
+  repository: "https://github.com/axios/axios"
+  published: 2026-06-03
   readme: First ~800 chars of the README...
-    readmeChars: 5421
-help[1]: Run `npm-axi view zod --full` to see complete README
+    readmeChars: 54720
+help[1]: Run `npm-axi view axios --full` to see complete README
 ```
 
-Pass `--full` to print the complete README.
+When the registry includes README data, pass `--full` to print the complete README.
 
 ### versions
 
 ```sh
 $ npm-axi versions typescript --limit 4
-latest: 5.7.2
-count: 4 of 1820 total
+latest: 6.0.3
+count: 4 of 3760 total
 versions[4]{version,published}:
-  5.7.2,2024-11-22
-  5.7.1,2024-11-20
+  6.0.3,2026-04-16
+  6.0.0-dev.20260416,2026-04-16
   ...
 ```
 
@@ -77,8 +81,8 @@ versions[4]{version,published}:
 $ npm-axi downloads express
 downloads:
   package: express
-  lastWeek: 30000000
-  lastMonth: 120000000
+  lastWeek: 110707678
+  lastMonth: 444383062
 ```
 
 ### No arguments
