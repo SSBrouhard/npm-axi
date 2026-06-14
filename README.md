@@ -12,14 +12,21 @@ call. Read-only, no authentication required.
 
 ## Install
 
+From source (works today):
+
 ```sh
-npm install -g npm-axi
+git clone https://github.com/SSBrouhard/npm-axi.git
+cd npm-axi
+npm install
+npm run build
+node dist/bin/npm-axi.js <command>   # or `npm link` to expose `npm-axi` on PATH
 ```
 
-Or run without installing:
+Once published to npm, it will also install globally or run via npx:
 
 ```sh
-npx -y npm-axi <command>
+npm install -g npm-axi   # after publish
+npx -y npm-axi <command> # after publish
 ```
 
 ## Usage
