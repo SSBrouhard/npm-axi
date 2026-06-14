@@ -22,6 +22,8 @@ src/commands/        Pure transforms returning plain JS objects (TOON-encoded by
   downloads.ts
 src/home.ts          No-args home view (reads ./package.json if present)
 src/help.ts          Top-level + per-command help text
+src/args.ts          Flag parser (parseFlags, parseLimit)
+src/format.ts        Output helpers (collapseWhitespace, truncateLine, isoDate, licenseString, normalizeRepo)
 test/                vitest, global fetch mocked against captured registry fixtures
 .agents/skills/npm-axi/SKILL.md   Installable skill (npx skills add)
 ```
