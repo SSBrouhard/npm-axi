@@ -6,6 +6,7 @@ export interface ParsedArgs {
 /**
  * Minimal flag parser for AXI commands.
  * Supports `--key value`, `--key=value`, and boolean `--flag`.
+ * Names in `booleans` are always treated as boolean even when followed by a non-flag token.
  * Everything else is a positional.
  */
 export function parseFlags(args: string[], booleans: string[] = []): ParsedArgs {
