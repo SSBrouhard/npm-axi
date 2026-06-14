@@ -1,0 +1,37 @@
+{
+  "name": "npm-axi",
+  "version": "0.1.0",
+  "description": "Search and inspect npm registry packages with token-efficient output — an AXI (Agent eXperience Interface).",
+  "keywords": ["axi", "agent", "cli", "npm", "registry", "toon"],
+  "license": "MIT",
+  "author": "SSBrouhard",
+  "homepage": "https://github.com/SSBrouhard/npm-axi",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SSBrouhard/npm-axi.git"
+  },
+  "type": "module",
+  "bin": {
+    "npm-axi": "dist/bin/npm-axi.js"
+  },
+  "files": ["dist", "README.md", "LICENSE"],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx src/bin/npm-axi.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "axi-sdk-js": "^0.1.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "vitest": "^2.1.0"
+  }
+}
