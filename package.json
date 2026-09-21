@@ -40,7 +40,7 @@
     "axi-sdk-js": "^0.1.7"
   },
   "devDependencies": {
-    "@types/node": "22.20.2",
+    "@types/node": "22.20.3",
     "tsx": "^4.19.0",
     "typescript": "^7.0.2",
     "vitest": "^5.0.0"
